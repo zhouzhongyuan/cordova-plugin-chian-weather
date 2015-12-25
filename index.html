@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="sha1.js"></script>
+<script>
+    var areaid = '101010100';
+    var type = 'forecast_v';
+//    指数:index_f(基础接口)；index_v(常规接口)； 3天预报:forecast_f(基础接口)；forecast_v(常规接口)；
+    var date = getWeatherDate();
+    var appid = '09e9f8e70473d7d5';
+    var url = 'http://open.weather.com.cn/data/?areaid=' + areaid +'&type=' + type + '&date=' + date + '&appid=';
+    var public_key = url + appid;
+
+    var key = getKey(public_key);
+    url = url + appid.slice(0,6) + '&key=' + key;
+
+    console.log(url);
+
+    function getWeatherDate(){
+        var date = new Date();
+        var year  = date.getFullYear().toString();
+        var month = (date.getMonth() + 1).toString();
+        var day   = (date.getDate() + 1).toString();
+        var hour = date.getHours().toString();
+        var minutes = date.getMinutes().toString();
+        var time = year.toString() + (month[1]?month:"0"+month[0]) + (day[1]?day:"0"+day[0]) + (hour[1]?hour:"0"+hour[0]) + (minutes[1]?minutes:"0"+minutes[0]);
+        return time;
+        //返回yyyymmddhhmm
+    }
+    function getKey(public_key){
+        var private_key = '51d136_SmartWeatherAPI_2b2bf24';
+        var shaObj = new jsSHA("SHA-1", "TEXT");
+        shaObj.setHMACKey(private_key, "TEXT");
+        shaObj.update(public_key);
+        var hmac = shaObj.getHMAC("B64");
+        var key = hmac;
+        key = encodeURIComponent(key);
+        return key;
+    }
+
+</script>
+</body>
+</html>
