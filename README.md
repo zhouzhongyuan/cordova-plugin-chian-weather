@@ -1,1 +1,1 @@
-# cordova-plugin-chian-weather
+# cordova-plugin-china-weather
